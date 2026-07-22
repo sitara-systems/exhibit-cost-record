@@ -43,6 +43,15 @@ fabrication_inclusive, scope_confidence, source_url, notes`
 tax_year, contractor_name, compensation, services_description,
 source_url`).
 
+**Federal rows also carry six competition-context columns** (added
+2026-07-22, pulled from USAspending's own award-detail API): `award_type`,
+`extent_competed`, `set_aside`, `solicitation_id`, `publicly_posted`,
+`parent_piid` — how each award was procured, whether it was competed at
+all, and (for orders placed under an existing IDIQ/BPA/Schedule vehicle,
+53% of federal rows) the underlying vehicle's contract number rather than
+the order's own. See `docs/methodology.md`'s "How each federal award was
+procured" section for field definitions and the full breakdown.
+
 `project_class` is one of: `kiosk` · `single_interactive` ·
 `multi_station` · `building_wide` · `maintenance` · `other`.
 Classification is derived from the award description only; rows that

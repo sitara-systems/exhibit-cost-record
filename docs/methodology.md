@@ -393,6 +393,65 @@ per-award detail-page fetch for all ~1,231 federal rows, not yet done). For
 sources that expose both an estimated and a final awarded figure (UK
 tenders), both are recorded with a note distinguishing them.
 
+**A per-award detail-page fetch was in fact run this session (2026-07-22,
+see below) — but for competition-context fields, not `total_award_value`.**
+The endpoint also exposes `base_and_all_options`/`base_exercised_options`,
+which could close this ceiling-value gap in a future session without a
+second full sweep, since the fetch infrastructure already exists.
+
+## How each federal award was procured (2026-07-22)
+
+Not every award in this dataset had a public solicitation, and a natural
+question is why. Every federal row's USAspending award-detail record
+(`api.usaspending.gov/api/v2/awards/<id>/`) was fetched once — 1,237
+requests, paced across a few passes after the API began resetting
+connections under sustained concurrent load — and six new columns were
+added to `data/awards_federal.csv`:
+
+| Column | Source field | What it means |
+|---|---|---|
+| `award_type` | top-level `type_description` | Delivery order, purchase order, definitive contract, or BPA call — the procurement instrument itself. |
+| `extent_competed` | `latest_transaction_contract_data.extent_competed_description` | Whether *this specific award* was competed: full and open, competed/not competed under simplified acquisition procedures, or not available for competition. |
+| `set_aside` | `.type_set_aside_description` | Small-business or socioeconomic set-aside category, when one applied; blank otherwise. |
+| `solicitation_id` | `.solicitation_identifier` | The actual solicitation number, when the award has one — a concrete string to search an archive or file a records request against. |
+| `publicly_posted` | `.fed_biz_opps_description` | Whether a notice was ever posted publicly (FedBizOpps/SAM.gov) for this award — **existed at the time**, not necessarily still retrievable (SAM.gov purges old notices roughly a year after posting). |
+| `parent_piid` | `parent_award.piid` | For delivery orders and BPA calls, the underlying IDIQ/BPA contract number — usually the more useful number to search, since the *order* itself was rarely separately solicited. |
+
+**The headline result**: 659 of 1,237 federal rows (53%) are delivery
+orders or BPA calls placed against an already-competed vehicle (an agency
+IDIQ or a GSA Schedule contract). Under FAR 16.505, placing an order
+against such a vehicle only requires the agency to give the vehicle's
+other holders "fair opportunity to be considered" — typically a quiet
+request for quote sent directly to a handful of eligible vendors, not a
+public posting. This is the concrete mechanism behind this dataset's most
+cryptic rows (the NPS/Smithsonian "exhibit planning and design" task
+orders surfaced by the 2026-07-22 Experiential Design Index
+cross-reference above): the vehicle was competed once, years earlier;
+the individual order wasn't.
+
+Broader breakdown: 1,026 of 1,237 (83%) involved some form of competition
+(full and open, or competed under simplified acquisition procedures); 209
+(17%) were sole source or not available for competition. 665 of 1,237
+(54%) had a notice posted publicly at some point.
+
+**Known limitation**: these fields reflect how the contracting officer
+coded the award in FPDS at the time, which is the same underlying data
+USAspending itself publishes — not an independently verified assessment.
+Federal procurement data-quality audits have found FPDS coding is not
+always consistent, particularly for older awards and for the
+`extent_competed`/`solicitation_procedures` pair specifically. Treat these
+columns as the government's own characterization, not a certified fact.
+
+**On FOIA and hunting down the original solicitation text**: this dataset
+does not attempt to retrieve solicitation or statement-of-work documents
+themselves — that's a manual, targeted activity (SAM.gov if the notice
+hasn't aged out, the Wayback Machine for archived FBO.gov/SAM.gov pages,
+commercial aggregators like GovTribe/HigherGov, or a FOIA/state-records
+request to the awarding agency for the contract file) worth doing for
+specific ambiguous rows, not a bulk operation across 1,200+ awards. A
+short candidate list of rows worth that kind of follow-up is tracked in
+the workspace-level project plan, not in this public repo.
+
 ## Dedupe policy
 
 Rows are deduplicated by their source system's own stable identifier

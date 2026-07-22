@@ -146,3 +146,39 @@ order of magnitude as the US multi-station middle half. The single UK
 building-wide row is a &pound;2.2M whole-project exhibition-design-team
 appointment. Currency, VAT, and procurement-system differences make these
 directional comparisons only.</p>
+
+<h2>8. Most federal awards were never separately advertised &mdash; and that's not a red flag</h2>
+<p>A reasonable question when a row has a terse, site-code-only
+description and no findable public notice: was this competed at all? Every
+federal row now carries the answer, pulled directly from USAspending's own
+award-detail record (visible in the <strong>Competition</strong> column
+and filter on the <a href="/browse/">browse page</a>):</p>
+<table class="facts">
+  <tr><td>Placed as an order under an existing vehicle (IDIQ / GSA Schedule / BPA)</td><td>659 of 1,237 (53%)</td></tr>
+  <tr><td>Some form of competition (full and open, or competed under simplified procedures)</td><td>1,026 of 1,237 (83%)</td></tr>
+  <tr><td>Sole source or not available for competition</td><td>209 of 1,237 (17%)</td></tr>
+  <tr><td>A notice was posted publicly at some point</td><td>665 of 1,237 (54%)</td></tr>
+</table>
+<p>The 53% figure is most of the explanation for why solicitations are
+often unfindable: under FAR 16.505, placing a delivery order or BPA call
+against a vehicle that was already competed (a GSA Schedule, an
+agency-wide IDIQ) only requires the agency to give the vehicle's other
+holders "fair opportunity to be considered" &mdash; typically a quiet
+request for quote sent directly to a handful of eligible vendors, never
+posted publicly. That's exactly the mechanism behind this dataset's
+National Park Service and Smithsonian design-only task orders (see the
+<a href="/methodology/">methodology page</a>'s cross-reference section):
+the underlying vehicle was competed once, years earlier; the individual
+order for "Little Bighorn Battlefield" or "Lake Mead" wasn't.</p>
+<p>Where a public notice did exist, SAM.gov generally purges it about a
+year after posting &mdash; so <code>publicly_posted: YES</code> confirms a
+notice existed at the time, not that it's still retrievable today. The
+CSV's new <code>solicitation_id</code> and <code>parent_piid</code>
+columns give a concrete number to search the Wayback Machine or a
+commercial contract-data aggregator for, when one is worth chasing.</p>
+<p class="note">This describes what USAspending's own record says about
+each award, not an independent assessment &mdash; accuracy depends on how
+the contracting officer coded it at the time, which federal data-quality
+audits have found is not always consistent. See the
+<a href="/methodology/">methodology page</a> for the full field
+definitions and how this was pulled.</p>

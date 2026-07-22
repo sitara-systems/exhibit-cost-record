@@ -100,6 +100,7 @@ def build(out_dir: Path) -> list[dict]:
     substitutions = {
         "[[ROWS]]": export_data.render_rows(records),
         "[[CLASS_OPTIONS]]": export_data.render_class_options(records),
+        "[[COMPETITION_OPTIONS]]": export_data.render_competition_options(records),
         "[[TOTAL]]": f"{len(records):,}",
     }
 

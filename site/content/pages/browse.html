@@ -1,6 +1,6 @@
 ---
 title: Browse the Data — The Exhibit Cost Record
-description: Search and filter all 1,478 records — federal contracts, grants, state contracts, UK tenders, and IRS Form 990 disclosures — with a link to the public source for every row.
+description: Search and filter all 1,629 records — federal contracts, grants, state contracts, UK tenders, and IRS Form 990 disclosures — with a link to the public source for every row.
 url: /browse/
 ---
 <div class="breadcrumbs"><a href="/">Home</a> &gt; Browse</div>
@@ -27,18 +27,26 @@ url: /browse/
 [[CLASS_OPTIONS]]
     </select>
   </label>
+  <label>Competition (federal only)
+    <select data-filter-field="competition">
+      <option value="">All</option>
+[[COMPETITION_OPTIONS]]
+    </select>
+  </label>
   <button type="button" data-filter-reset>Reset</button>
 </div>
 <p class="subtitle" id="dataCount">[[TOTAL]] records</p>
 <p class="note">
   Click a source link in the last column to verify a row against its public
-  record. Column definitions and classification rules are on the
+  record. Column definitions and classification rules, including what the
+  <strong>Competition</strong> column means and why most federal rows carry
+  no separate public solicitation, are on the
   <a href="/methodology/">methodology page</a>. Full dataset (JSON/CSV):
   <a href="/assets/data/records.json">records.json</a>.
 </p>
 <table class="list" id="dataTable">
   <thead>
-    <tr><th>Source</th><th>Recipient</th><th>Client / agency</th><th>Year</th><th>Class</th><th>Description</th><th>Amount</th><th>Source</th></tr>
+    <tr><th>Source</th><th>Recipient</th><th>Client / agency</th><th>Year</th><th>Class</th><th>Competition</th><th>Description</th><th>Amount</th><th>Source</th></tr>
   </thead>
   <tbody>
 [[ROWS]]

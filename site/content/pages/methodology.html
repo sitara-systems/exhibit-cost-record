@@ -392,6 +392,90 @@ but empty for federal rows in this dataset — getting it would require a
 per-award detail-page fetch for all ~1,231 federal rows, not yet done). For
 sources that expose both an estimated and a final awarded figure (UK
 tenders), both are recorded with a note distinguishing them.</p>
+<p><strong>A per-award detail-page fetch was in fact run this session (2026-07-22,
+see below) — but for competition-context fields, not <code>total_award_value</code>.</strong>
+The endpoint also exposes <code>base_and_all_options</code>/<code>base_exercised_options</code>,
+which could close this ceiling-value gap in a future session without a
+second full sweep, since the fetch infrastructure already exists.</p>
+<h2>How each federal award was procured (2026-07-22)</h2>
+<p>Not every award in this dataset had a public solicitation, and a natural
+question is why. Every federal row&rsquo;s USAspending award-detail record
+(<code>api.usaspending.gov/api/v2/awards/&lt;id&gt;/</code>) was fetched once — 1,237
+requests, paced across a few passes after the API began resetting
+connections under sustained concurrent load — and six new columns were
+added to <code>data/awards_federal.csv</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Source field</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>award_type</code></td>
+<td>top-level <code>type_description</code></td>
+<td>Delivery order, purchase order, definitive contract, or BPA call — the procurement instrument itself.</td>
+</tr>
+<tr>
+<td><code>extent_competed</code></td>
+<td><code>latest_transaction_contract_data.extent_competed_description</code></td>
+<td>Whether <em>this specific award</em> was competed: full and open, competed/not competed under simplified acquisition procedures, or not available for competition.</td>
+</tr>
+<tr>
+<td><code>set_aside</code></td>
+<td><code>.type_set_aside_description</code></td>
+<td>Small-business or socioeconomic set-aside category, when one applied; blank otherwise.</td>
+</tr>
+<tr>
+<td><code>solicitation_id</code></td>
+<td><code>.solicitation_identifier</code></td>
+<td>The actual solicitation number, when the award has one — a concrete string to search an archive or file a records request against.</td>
+</tr>
+<tr>
+<td><code>publicly_posted</code></td>
+<td><code>.fed_biz_opps_description</code></td>
+<td>Whether a notice was ever posted publicly (FedBizOpps/SAM.gov) for this award — <strong>existed at the time</strong>, not necessarily still retrievable (SAM.gov purges old notices roughly a year after posting).</td>
+</tr>
+<tr>
+<td><code>parent_piid</code></td>
+<td><code>parent_award.piid</code></td>
+<td>For delivery orders and BPA calls, the underlying IDIQ/BPA contract number — usually the more useful number to search, since the <em>order</em> itself was rarely separately solicited.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The headline result</strong>: 659 of 1,237 federal rows (53%) are delivery
+orders or BPA calls placed against an already-competed vehicle (an agency
+IDIQ or a GSA Schedule contract). Under FAR 16.505, placing an order
+against such a vehicle only requires the agency to give the vehicle&rsquo;s
+other holders &ldquo;fair opportunity to be considered&rdquo; — typically a quiet
+request for quote sent directly to a handful of eligible vendors, not a
+public posting. This is the concrete mechanism behind this dataset&rsquo;s most
+cryptic rows (the NPS/Smithsonian &ldquo;exhibit planning and design&rdquo; task
+orders surfaced by the 2026-07-22 Experiential Design Index
+cross-reference above): the vehicle was competed once, years earlier;
+the individual order wasn&rsquo;t.</p>
+<p>Broader breakdown: 1,026 of 1,237 (83%) involved some form of competition
+(full and open, or competed under simplified acquisition procedures); 209
+(17%) were sole source or not available for competition. 665 of 1,237
+(54%) had a notice posted publicly at some point.</p>
+<p><strong>Known limitation</strong>: these fields reflect how the contracting officer
+coded the award in FPDS at the time, which is the same underlying data
+USAspending itself publishes — not an independently verified assessment.
+Federal procurement data-quality audits have found FPDS coding is not
+always consistent, particularly for older awards and for the
+<code>extent_competed</code>/<code>solicitation_procedures</code> pair specifically. Treat these
+columns as the government&rsquo;s own characterization, not a certified fact.</p>
+<p><strong>On FOIA and hunting down the original solicitation text</strong>: this dataset
+does not attempt to retrieve solicitation or statement-of-work documents
+themselves — that&rsquo;s a manual, targeted activity (SAM.gov if the notice
+hasn&rsquo;t aged out, the Wayback Machine for archived FBO.gov/SAM.gov pages,
+commercial aggregators like GovTribe/HigherGov, or a FOIA/state-records
+request to the awarding agency for the contract file) worth doing for
+specific ambiguous rows, not a bulk operation across 1,200+ awards. A
+short candidate list of rows worth that kind of follow-up is tracked in
+the workspace-level project plan, not in this public repo.</p>
 <h2>Dedupe policy</h2>
 <p>Rows are deduplicated by their source system&rsquo;s own stable identifier
 (USAspending&rsquo;s <code>generated_internal_id</code> for federal awards) — an award
@@ -511,51 +595,46 @@ museum&rdquo;/&rdquo;all exhibits&rdquo;-scoped language found six rows already 
 </ul>
 <h2>Sampling bias and composition effects (read before citing any median)</h2>
 <p>Three properties of how this dataset was assembled shape its summary
-statistics. None of them is a data error &mdash; every row is a real public
-record &mdash; but each one limits what the aggregates can honestly
-claim.</p>
-<p><strong>1. Recipient-driven concentration.</strong> The five most
-frequent recipients (Capitol Exhibit Services ~280 rows, Color-Ad 129,
-Electrosonic 76, Explus 60, Southern Custom Exhibits of Alabama 55)
-account for roughly 45% of federal-plus-state rows. This is substantially
-an artifact of the sweep design, not a market-structure finding: the
-federal sweep included a recipient pass over 27 named firms, and the
-Experiential Design Index cross-reference ran further un-keyworded
-recipient-name searches &mdash; so firms searched by name have their full
-award histories captured, while firms found only via keywords have partial
-ones. Row counts must never be read as market share. By dollars the
-picture inverts: those five firms hold a low-single-digit share of the
-dataset's total obligated amount, and the most frequent recipient averages
-about $117,000 per row &mdash; high-volume small task orders (trade-show
-support, small repairs) that pull class medians downward. This is why the
-<a href="/findings/">findings page</a> reports interquartile ranges
-alongside medians.</p>
-<p><strong>2. Class composition and the <code>fabrication_inclusive</code>
-flag.</strong> Pooled across all classes, fabrication-inclusive rows have
-a higher median than fabrication-excluded rows ($150,000 vs. $98,040).
-That pooled gap must not be cited as a measured &ldquo;fabrication
-premium&rdquo;: the two flag groups contain different mixes of project
-classes (fab-inclusive rows are 86% <code>multi_station</code>;
-fab-excluded rows are 42% <code>maintenance</code> plus small design task
-orders), so the pooled comparison mostly measures class mix. Controlled
-within <code>multi_station</code> &mdash; the only class with enough rows
-on both sides &mdash; the medians are statistically indistinguishable
-($165,728 fab-inclusive, n=412, vs. $160,222 fab-excluded, n=56). The
-smaller classes point in different directions at unusable n
-(<code>single_interactive</code> 1.52&times; at n=28/30;
-<code>maintenance</code> inverts at 0.24&times; because its fab-excluded
-side is dominated by larger AV service contracts). The flag exists so
-readers can compare like with like; this dataset has <strong>not</strong>
-measured what bundling fabrication adds to a project's cost.</p>
-<p><strong>3. Median sensitivity to sweep composition.</strong> Because
-coverage grows opportunistically (keyword passes, recipient passes,
-cross-references), per-class medians move as sources are added: the
-2026-07-22 Index cross-reference added 144 federal rows (mostly small NPS
-design-only task orders) and shifted the federal
-<code>single_interactive</code> median from roughly $68,000 to $45,000.
-Medians here describe <em>this record, given its sources</em> &mdash; not
-a stable market price. Interquartile ranges are more robust to these
-shifts and are the preferred citation form.</p>
+statistics. None of them is a data error — every row is a real public
+record — but each one limits what the aggregates can honestly claim.</p>
+<p><strong>1. Recipient-driven concentration.</strong> The five most frequent recipients
+(Capitol Exhibit Services ~280 rows, Color-Ad 129, Electrosonic 76,
+Explus 60, Southern Custom Exhibits of Alabama 55) account for roughly
+45% of federal-plus-state rows. This is substantially an artifact of the
+sweep design, not a market-structure finding: the federal sweep included
+a recipient pass over 27 named firms, and the Experiential Design Index
+cross-reference ran further un-keyworded recipient-name searches — so
+firms searched by name have their full award histories captured, while
+firms found only via keywords have partial ones. Row counts must never be
+read as market share. By dollars the picture inverts: those five firms
+hold a low-single-digit share of the dataset&rsquo;s total obligated amount,
+and the most frequent recipient averages about $117,000 per row —
+high-volume small task orders (trade-show support, small repairs) that
+pull class medians downward. This is why the findings page reports
+interquartile ranges alongside medians.</p>
+<p><strong>2. Class composition and the <code>fabrication_inclusive</code> flag.</strong> Pooled
+across all classes, fabrication-inclusive rows have a higher median than
+fabrication-excluded rows ($150,000 vs. $98,040). That pooled gap must
+not be cited as a measured &ldquo;fabrication premium&rdquo;: the two flag groups
+contain different mixes of project classes (fab-inclusive rows are 86%
+<code>multi_station</code>; fab-excluded rows are 42% <code>maintenance</code> plus small
+design task orders), so the pooled comparison mostly measures class mix.
+Controlled within <code>multi_station</code> — the only class with enough rows on
+both sides — the medians are statistically indistinguishable ($165,728
+fab-inclusive, n=412, vs. $160,222 fab-excluded, n=56). The smaller
+classes point in different directions at unusable n (<code>single_interactive</code>
+1.52× at n=28/30; <code>maintenance</code> inverts at 0.24× because its
+fab-excluded side is dominated by larger AV service contracts). The flag
+exists so readers can compare like with like; this dataset has <strong>not</strong>
+measured what bundling fabrication adds to a project&rsquo;s cost.</p>
+<p><strong>3. Median sensitivity to sweep composition.</strong> Because coverage grows
+opportunistically (keyword passes, recipient passes, cross-references),
+per-class medians move as sources are added: the 2026-07-22 Index
+cross-reference added 144 federal rows (mostly small NPS design-only
+task orders) and shifted the federal <code>single_interactive</code> median from
+roughly $68,000 to $45,000. Medians here describe <em>this record, given
+its sources</em> — not a stable market price. Interquartile ranges are more
+robust to these shifts and are the preferred citation form.</p>
 <h2>Known gaps</h2>
 <ul>
 <li><code>total_award_value</code> is empty for every federal row except the two
