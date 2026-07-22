@@ -1,0 +1,111 @@
+/* The Exhibit Cost Record — closely follows The Experiential Design Index's
+   design system (same token structure, same plain Wikipedia/IMDb-style
+   layout) since both are neutral public-data resources published by
+   Sitara Systems. Not Sitara's own brand chrome. */
+
+:root {
+  --bg: #ffffff;
+  --fg: #1a1a1a;
+  --muted: #5a5a5a;
+  --border: #dcdcdc;
+  --accent: #7a1f2b;
+  --accent-bg: #faf3f0;
+  --link: #1f4e8c;
+  --good: #1c6e3d;
+  --warn: #8a6d00;
+  --bad: #8a2f2f;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14161a;
+    --fg: #e7e7e7;
+    --muted: #a2a2a2;
+    --border: #3a3d42;
+    --accent: #d98d94;
+    --accent-bg: #24191b;
+    --link: #7fb0ff;
+    --good: #6fd39a;
+    --warn: #e0c060;
+    --bad: #e28a8a;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14161a; --fg: #e7e7e7; --muted: #a2a2a2; --border: #3a3d42;
+  --accent: #d98d94; --accent-bg: #24191b; --link: #7fb0ff;
+  --good: #6fd39a; --warn: #e0c060; --bad: #e28a8a;
+}
+:root[data-theme="light"] {
+  --bg: #ffffff; --fg: #1a1a1a; --muted: #5a5a5a; --border: #dcdcdc;
+  --accent: #7a1f2b; --accent-bg: #faf3f0; --link: #1f4e8c;
+  --good: #1c6e3d; --warn: #8a6d00; --bad: #8a2f2f;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+}
+.wrap { max-width: 900px; margin: 0 auto; padding: 0 1.25rem; }
+
+header.site { border-bottom: 1px solid var(--border); padding: 1rem 0; }
+header.site .wrap { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: .5rem 1.5rem; }
+header.site a.brand { font-weight: 700; font-size: 1.05rem; color: var(--fg); text-decoration: none; }
+nav.site a { color: var(--fg); text-decoration: none; margin-left: 1.25rem; font-size: .95rem; }
+nav.site a:first-child { margin-left: 0; }
+nav.site a:hover { text-decoration: underline; }
+
+main { padding: 2rem 0 3rem; }
+h1 { font-size: 1.6rem; margin: 0 0 .25rem; }
+h2 { font-size: 1.15rem; margin: 2rem 0 .5rem; border-bottom: 1px solid var(--border); padding-bottom: .25rem; }
+a { color: var(--link); }
+p { margin: 0 0 1em; }
+.subtitle { color: var(--muted); margin: 0 0 1.5rem; }
+.note { color: var(--muted); font-size: .9rem; }
+.breadcrumbs { font-size: .85rem; color: var(--muted); margin-bottom: 1rem; }
+.breadcrumbs a { color: var(--muted); }
+
+table { border-collapse: collapse; width: 100%; margin: .5rem 0 1.5rem; font-size: .95rem; }
+/* plain, unclassed tables (rendered from docs/*.md via markdown) get a
+   sensible default so they don't need a class added by hand */
+table:not(.facts):not(.list) th, table:not(.facts):not(.list) td { text-align: left; padding: .45rem .6rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+table:not(.facts):not(.list) th { color: var(--muted); font-weight: 600; font-size: .85rem; }
+table.facts td, table.facts th { text-align: left; padding: .35rem .6rem .35rem 0; vertical-align: top; }
+table.facts th { color: var(--muted); font-weight: 600; width: 11rem; white-space: nowrap; }
+table.list { width: 100%; }
+table.list th, table.list td { text-align: left; padding: .45rem .6rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+table.list th { color: var(--muted); font-weight: 600; font-size: .85rem; text-transform: uppercase; letter-spacing: .03em; white-space: nowrap; }
+table.list tr:hover td { background: var(--accent-bg); }
+table.list td.amount { font-variant-numeric: tabular-nums; white-space: nowrap; }
+table.list td.desc { max-width: 34rem; }
+
+.credit-tag, .src-tag { display: inline-block; font-size: .72rem; font-weight: 600; padding: .05rem .4rem; margin-left: .35rem; border: 1px solid var(--border); border-radius: .6rem; color: var(--muted); white-space: nowrap; }
+.flag-pill { display: inline-block; padding: .1rem .5rem; border-radius: .8rem; font-size: .78rem; font-weight: 600; border: 1px solid currentColor; }
+.flag-y { color: var(--warn); }
+.flag-n { color: var(--good); }
+.flag-unknown { color: var(--muted); }
+
+.counts { display: flex; gap: 2rem; margin: 1.5rem 0; flex-wrap: wrap; }
+.counts .count .n { font-size: 2rem; font-weight: 700; display: block; }
+.counts .count .label { color: var(--muted); font-size: .9rem; }
+
+.filters { display: flex; flex-wrap: wrap; align-items: end; gap: .75rem 1.25rem; margin: .75rem 0 1.25rem; padding: .85rem 1rem; background: var(--accent-bg); border: 1px solid var(--border); border-radius: .4rem; }
+.filters label { display: flex; flex-direction: column; gap: .25rem; font-size: .8rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .03em; }
+.filters input, .filters select { font: inherit; font-size: .9rem; padding: .3rem .4rem; border: 1px solid var(--border); border-radius: .3rem; background: var(--bg); color: var(--fg); min-width: 10rem; }
+.filters button { font: inherit; font-size: .85rem; padding: .35rem .8rem; border: 1px solid var(--border); border-radius: .3rem; background: var(--bg); color: var(--fg); cursor: pointer; align-self: end; }
+.filters button:hover { background: var(--accent-bg); border-color: var(--accent); }
+
+.finding-fig { display: flex; gap: 1.75rem; flex-wrap: wrap; margin: 1rem 0; padding: .85rem 0; border-top: 1px dashed var(--border); border-bottom: 1px dashed var(--border); }
+.finding-fig .f { font-weight: 700; font-size: 1.05rem; }
+.finding-fig .f .label { display: block; font-weight: 400; font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; }
+
+footer.site { border-top: 1px solid var(--border); padding: 1.5rem 0; color: var(--muted); font-size: .85rem; }
+footer.site a { color: var(--muted); }
+code { background: var(--accent-bg); padding: .1rem .3rem; border-radius: .25rem; font-size: .9em; }
+pre { background: var(--accent-bg); border: 1px solid var(--border); border-radius: .4rem; padding: 1rem; overflow-x: auto; font-size: .85em; line-height: 1.5; }
+pre code { background: none; padding: 0; }
+blockquote { border-left: 3px solid var(--border); margin: 1rem 0; padding: .1rem 1.1rem; color: var(--muted); }
+ul, ol { padding-left: 1.3em; }
+li { margin-bottom: .3em; }

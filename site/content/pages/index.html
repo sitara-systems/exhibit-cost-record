@@ -1,0 +1,61 @@
+---
+title: The Exhibit Cost Record — what museum exhibits actually cost
+description: A public-records dataset of museum exhibit, interactive, and audiovisual contract costs — 1,629 rows assembled entirely from federal contracts, grants, state procurement, UK tenders, and IRS Form 990 disclosures.
+url: /
+---
+<h1>The Exhibit Cost Record</h1>
+<p class="subtitle">The public record of what museum exhibits, interactives, and AV actually cost.</p>
+
+<p>The record of what exhibits and interactive media cost already exists in
+public &mdash; federal contracts, grants, state procurement portals, UK
+tenders, and nonprofit tax filings. It has just never been assembled in one
+place. No firm's internal finances appear here; every row traces to a
+source you can check yourself.</p>
+
+<div class="counts">
+  <div class="count"><span class="n">1,629</span><span class="label">total records</span></div>
+  <div class="count"><span class="n">5</span><span class="label">public sources</span></div>
+  <div class="count"><span class="n">1,237</span><span class="label">federal contract awards</span></div>
+  <div class="count"><span class="n">218</span><span class="label">NSF / IMLS grants</span></div>
+  <div class="count"><span class="n">107</span><span class="label">state contracts</span></div>
+  <div class="count"><span class="n">58</span><span class="label">990 contractor disclosures</span></div>
+</div>
+
+<h2>Browse</h2>
+<table class="facts">
+  <tr><td><a href="/browse/">Browse the data</a></td><td>Search and filter all 1,629 records, with a source link on every row.</td></tr>
+  <tr><td><a href="/findings/">Findings</a></td><td>What the data indicates about exhibit pricing, computed directly from the data.</td></tr>
+  <tr><td><a href="/methodology/">Methodology</a></td><td>Sources, classification rules, the scope-normalization standard, QA results.</td></tr>
+  <tr><td><a href="/benchmarks/">Published benchmarks</a></td><td>Industry cost figures from named public sources (MGAC, Praxis Exhibits).</td></tr>
+</table>
+
+<h2>Five public sources, one comparable record</h2>
+<p>Every transaction type discloses cost differently. This dataset
+normalizes them into one schema &mdash; recipient, client, year, amount,
+description, and a consistent project-scope classification &mdash; while
+keeping each row's own source distinct and citable.</p>
+<table class="facts">
+  <tr><td>Federal contracts</td><td>USAspending.gov awards for exhibit design, fabrication, AV integration, and interpretive media &mdash; Smithsonian, NPS, and other federal agencies, 2015&ndash;present.</td></tr>
+  <tr><td>Federal grants</td><td>NSF's Advancing Informal STEM Learning program and IMLS museum-grant programs &mdash; the science-center and small-museum slice federal contracts miss.</td></tr>
+  <tr><td>State contracts</td><td>Open-checkbook and contract-transparency portals in Texas, California, New York, and Washington.</td></tr>
+  <tr><td>UK tenders</td><td>Public tenders from UK national museums, kept as non-US comparables and never mixed into US figures.</td></tr>
+  <tr><td>IRS Form 990 disclosures</td><td>Every nonprofit museum must disclose its five highest-paid independent contractors over $100K &mdash; the only source that captures nonprofit museum spending directly.</td></tr>
+</table>
+
+<h2>The scope-normalization standard</h2>
+<p>Published exhibit-cost figures vary mostly by what's bundled into the
+number &mdash; not by the underlying market. The canonical unit of
+comparison across every row is the <strong>full interactive scope, hardware
+and software combined</strong> &mdash; design, software, content, hardware,
+and integration &mdash; excluding exhibit fabrication and base-building
+infrastructure. Awards that deviate are flagged
+(<code>fabrication_inclusive</code>) rather than silently mixed in. Read
+the full standard on the <a href="/methodology/">methodology page</a>.</p>
+
+<h2>About the data</h2>
+<p>Every row traces to a public, independently checkable source &mdash; a
+government procurement record, a grant database, or a nonprofit's own IRS
+filing. This is a descriptive record, not price advice, and makes no
+commentary on any firm's pricing. Data is licensed
+<a href="https://creativecommons.org/licenses/by/4.0/legalcode">CC BY 4.0</a>.
+See the <a href="/about/">About page</a> for the full rules of the road.</p>

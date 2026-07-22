@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ page.title }}</title>
+<meta name="description" content="{{ page.description }}">
+<link rel="canonical" href="{{ site_url }}{{ page.url }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Exhibit Cost Record">
+<meta property="og:title" content="{{ page.title }}">
+<meta property="og:description" content="{{ page.description }}">
+<meta property="og:url" content="{{ site_url }}{{ page.url }}">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/assets/css/site.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Dataset","name":"The Exhibit Cost Record","description":"A public-records dataset of museum exhibit, interactive, and audiovisual contract costs, assembled from federal contracts, federal and state grants, state procurement portals, UK public tenders, and IRS Form 990 disclosures.","url":"{{ site_url }}/","license":"https://creativecommons.org/licenses/by/4.0/","creator":{"@type":"Organization","name":"Sitara Systems","url":"https://sitara.systems/"},"keywords":["museum exhibits","exhibit costs","interactive media","procurement","IRS Form 990","government contracts"]}
+</script>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/">The Exhibit Cost Record</a>
+    <nav class="site">
+      <a href="/browse/">Browse</a>
+      <a href="/findings/">Findings</a>
+      <a href="/methodology/">Methodology</a>
+      <a href="/benchmarks/">Benchmarks</a>
+      <a href="/about/">About</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap">
+{{ content }}
+</main>
+<footer class="site">
+  <div class="wrap">
+    <p>The Exhibit Cost Record is published and maintained by
+    <a href="https://sitara.systems">Sitara Systems</a>. Data licensed
+    <a href="https://creativecommons.org/licenses/by/4.0/legalcode">CC BY 4.0</a>.
+    <a href="/about/">About &amp; rules of the road</a>.</p>
+  </div>
+</footer>
+</body>
+</html>

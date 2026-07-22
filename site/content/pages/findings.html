@@ -1,0 +1,167 @@
+---
+title: Findings — The Exhibit Cost Record
+description: What the data indicates about museum exhibit pricing — a scope-driven price ladder, the fabrication-bundling effect, vendor concentration, and other findings, each with figures and caveats.
+url: /findings/
+---
+<div class="breadcrumbs"><a href="/">Home</a> &gt; Findings</div>
+<h1>What the data indicates about pricing</h1>
+<p class="subtitle">Every figure below is computed directly from the dataset and
+can be reproduced by filtering the <a href="/browse/">browse page</a>. This is
+a descriptive record, not price advice &mdash; each finding carries the
+caveats that matter for reading it responsibly.</p>
+
+<h2>1. A clear scope-driven price ladder</h2>
+<p>Within federal awards &mdash; the dataset's largest and most consistently
+classified single source &mdash; the median obligated amount rises steadily
+with project scope, from a single touch kiosk all the way to a whole-museum
+exhibit fit-out.</p>
+<div class="finding-fig">
+  <span class="f"><span class="label">Kiosk (n=18)</span>$36,629</span>
+  <span class="f"><span class="label">Single interactive (n=77)</span>$44,919</span>
+  <span class="f"><span class="label">Maintenance (n=81)</span>$59,825</span>
+  <span class="f"><span class="label">Multi-station (n=288)</span>$227,879</span>
+  <span class="f"><span class="label">Building-wide (n=6)</span>$1,091,455</span>
+</div>
+<p>That's roughly a <strong>30&times;</strong> spread in medians across five
+classes &mdash; not a surprising direction, but the first time it's been
+shown with real award-level numbers rather than asserted.</p>
+<p class="note">Federal medians only (grants and state contracts skew the
+combined multi-station median lower, to $162,463, because nonprofit-grant
+and state awards tend smaller). The federal <code>building_wide</code> rung
+was a real gap until a 2026-07-22 follow-up pass found six federal rows
+sitting misclassified as `multi_station`/`other` — see finding 6. A
+2026-07-22 cross-reference against the Experiential Design Index added 144
+federal rows across several classes (mostly <code>single_interactive</code>
+and <code>multi_station</code> National Park Service design-only task
+orders), which is most of why the single-interactive and multi-station
+medians and n moved from the prior pass.</p>
+
+<h2>2. Fabrication bundling changes the number by roughly 1.53&times;</h2>
+<p>This is the dataset's central methodological point, now backed by data
+instead of assumption. Awards that bundle exhibit fabrication into the
+scope cost meaningfully more than awards covering design, software, AV, and
+integration alone &mdash; at the same project-class level.</p>
+<div class="finding-fig">
+  <span class="f"><span class="label">Fabrication included</span>$150,000 median</span>
+  <span class="f"><span class="label">Fabrication excluded</span>$98,040 median</span>
+</div>
+<p>Published exhibit-cost figures that don't specify what's bundled in are
+close to meaningless for comparison &mdash; two "exhibit cost" numbers can
+differ by 53% purely on scope definition, with no difference in the
+underlying market. Every row in this dataset carries the
+<code>fabrication_inclusive</code> flag specifically so this doesn't get
+averaged away.</p>
+<p class="note">Computed across all non-<code>other</code> classes and all
+USD sources; rows with <code>fabrication_inclusive: unknown</code> are
+excluded from both sides of the comparison, not counted as either.</p>
+
+<h2>3. Nonprofit museums pay their standing vendors a different kind of number</h2>
+<p>IRS Form 990 contractor disclosures measure something federal and state
+procurement data can't see: what a nonprofit museum pays one firm
+<em>across a whole tax year</em>, not per project.</p>
+<div class="finding-fig">
+  <span class="f"><span class="label">Median annual compensation (n=58)</span>$569,553</span>
+  <span class="f"><span class="label">Mean</span>$826,091</span>
+  <span class="f"><span class="label">Largest (AMNH / Design and Production Inc.)</span>$7,143,403</span>
+</div>
+<p>These figures aren't directly comparable to the single-project award
+amounts elsewhere in the dataset &mdash; a museum's annual payment to a
+standing exhibit vendor can span several concurrent projects. But they're
+the only window this dataset has into nonprofit museum spending at all,
+since that spending mostly never touches a government procurement system.</p>
+<p class="note">Only 58 of ~537 extracted contractor rows (across 156
+researched museums) were kept as plausibly exhibit/AV/design related
+&mdash; see the <a href="/methodology/">methodology page</a> for the full
+keep/skip rule.</p>
+
+<h2>4. A small number of firms do most of the government-facing work</h2>
+<p>Across federal and state awards, five recipients account for a large
+share of all rows in the dataset:</p>
+<div class="finding-fig">
+  <span class="f"><span class="label">Capitol Exhibit Services</span>279 rows</span>
+  <span class="f"><span class="label">Color-Ad</span>129 rows</span>
+  <span class="f"><span class="label">Electrosonic</span>76 rows</span>
+  <span class="f"><span class="label">Explus</span>60 rows</span>
+  <span class="f"><span class="label">Southern Custom Exhibits of Alabama</span>55 rows</span>
+</div>
+<p>That's <strong>599 of 1,344 federal-plus-state rows &mdash; about
+45%</strong> &mdash; concentrated in five firms. This isn't unusual for
+government procurement (a handful of firms build the past-performance
+record needed to keep winning), but it means award-level pricing in this
+dataset is disproportionately shaped by how these specific firms price, not
+a broad market sample.</p>
+<p class="note">Southern Custom Exhibits of Alabama displaced Ideum from
+the fifth spot after the 2026-07-22 Experiential Design Index
+cross-reference surfaced real additional National Park Service awards to
+the firm the original sweep had missed.</p>
+<p class="note">Row count, not dollar share &mdash; a firm with many small
+task orders (like Capitol Exhibit Services' trade-show and small-repair
+volume) shows up differently than one with fewer, larger awards.</p>
+
+<h2>5. One vendor's kiosk product line prices almost like a catalog</h2>
+<p>12 of the dataset's 31 <code>kiosk</code>-class rows (39%) are a single
+vendor, Ideum &mdash; and their federal multi-touch table awards form a
+fairly legible price ladder by size and customization: roughly
+<strong>$16,700</strong> for a small table up to <strong>$199,000</strong>
+for their largest custom unit. It's the closest thing in this dataset to
+visible product-line pricing from a single dominant supplier, rather than a
+one-off custom bid.</p>
+
+<h2>6. Whole-museum exhibit fit-outs still need the headline caveat &mdash; but there's real federal data now</h2>
+<p>Until a 2026-07-22 follow-up pass, this class had zero federal rows at
+all. A targeted search found six federal awards that had been sitting
+misclassified as <code>multi_station</code> or <code>other</code> &mdash;
+each describes an unqualified, whole-facility exhibit scope (a brand-new
+Smithsonian museum's inaugural exhibits, the sole fabrication contract for
+an entire other national museum, a NASA visitor center's complete exhibit
+rebuild, three National Park Service visitor-center exhibit contracts).
+The class is now 13 rows across all sources:</p>
+<div class="finding-fig">
+  <span class="f"><span class="label">Federal n</span>6, median $1,091,455</span>
+  <span class="f"><span class="label">All sources n</span>13</span>
+  <span class="f"><span class="label">Range</span>$80,020 &ndash; $57,442,500</span>
+</div>
+<p><strong>Don't cite the all-sources median without reading this:</strong>
+two of the largest values ($57.4M and $13.5M, both a single vendor's Texas
+Historical Commission awards) are flagged <code>scope_confidence: low</code>
+in the source data &mdash; they read as IDIQ contract-vehicle ceiling
+values, not confirmed single-project spend. The federal rows found in the
+follow-up pass are cleaner: two (Smithsonian's NMAAHC inaugural exhibits at
+$7.07M obligated / $48.6M ceiling, and the National Museum of the U.S.
+Army's exhibit fabrication at $45.2M obligated / $69.6M ceiling) are
+medium-confidence with an explicit whole-museum scope; the other four are
+smaller visitor-center-scale fit-outs ($395,820 &ndash; $1.4M).</p>
+<p class="note">Sparse by design still applies &mdash; the dataset
+publishes this class with its real, still-small n rather than padding it.
+Three of the six federal rows carry <code>scope_confidence: low</code>
+themselves (the title alone doesn't explicitly confirm full-facility scope
+the way the others do) &mdash; see the
+<a href="/methodology/">methodology page</a> for the full reclassification
+writeup.</p>
+
+<h2>7. UK figures land in the same range as mid-size US work</h2>
+<p>UK museum-sector tenders (non-US comparables, kept in their own file)
+show gallery-scale fit-outs in the same order of magnitude as US
+<code>multi_station</code> awards &mdash; roughly &pound;380,000 to
+&pound;900,000. The dataset's single UK <code>building_wide</code> row is a
+&pound;2.2M design-team appointment (RIBA stages 2&ndash;6, two museums'
+new galleries) that explicitly <strong>excludes fabrication</strong> &mdash;
+about a third the size of the (caveated) US building-wide median, which is
+consistent with finding 2's fabrication-bundling effect showing up again in
+a completely different procurement system.</p>
+<p class="note">Currency and market differences mean these are directional
+comparisons, not apples-to-apples conversions. See
+<a href="/methodology/">methodology</a>.</p>
+
+<h2>8. The biggest dollar figures in the dataset are not exhibit costs</h2>
+<p>The largest raw obligated amounts in the whole dataset &mdash; several
+in the $100M&ndash;$545M range &mdash; all sit in
+<code>project_class: other</code>, not any exhibit-specific class. They're
+whole-museum construction-management and renovation contracts (e.g. the
+Smithsonian's National Air and Space Museum and National Museum of African
+American History and Culture revitalizations), correctly excluded from
+exhibit-specific figures by the scope-normalization standard.</p>
+<p>This is worth stating plainly: <strong>if you sort this dataset by raw
+dollar amount without checking <code>project_class</code>, you will
+conclude exhibits cost far more than they do.</strong> The classification
+system exists specifically to prevent that conflation.</p>

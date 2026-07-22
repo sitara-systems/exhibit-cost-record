@@ -1,0 +1,32 @@
+# The Exhibit Cost Record
+
+> A public-records dataset of museum exhibit, interactive, and audiovisual
+> contract costs — 1,478 rows assembled entirely from federal contracts,
+> federal and state grants, state procurement portals, UK public tenders,
+> and IRS Form 990 nonprofit disclosures. Every row traces to a public
+> source URL. No firm's internal finances appear here.
+
+Published by Sitara Systems (https://sitara.systems/), a spatial
+human-computer interaction consultancy for museums and cultural
+institutions. Lives alongside The Experiential Design Index
+(https://sitara.systems/experiential-design-index/) as a sibling public
+data resource under the same domain.
+
+## Key pages
+
+- [Browse the data](https://sitara.systems/exhibit-cost-record/browse/): search and filter all 1,478 records
+- [Findings](https://sitara.systems/exhibit-cost-record/findings/): what the data indicates about exhibit pricing,
+  with figures and caveats
+- [Methodology](https://sitara.systems/exhibit-cost-record/methodology/): sources, classification rules, the
+  scope-normalization standard, QA results
+- [Published benchmarks](https://sitara.systems/exhibit-cost-record/benchmarks/): industry cost figures from named
+  public sources (MGAC's 2025 Museum Market Report, Praxis Exhibits)
+- [About](https://sitara.systems/exhibit-cost-record/about/): license (CC BY 4.0), rules of the road, status
+
+## Notes for reuse
+
+This is a descriptive record, not price advice, and makes no commentary
+on any firm's pricing. Figures vary substantially by whether exhibit
+fabrication is bundled into the scope — always check the
+`fabrication_inclusive` flag before comparing two figures. See
+the methodology page before citing any individual row or summary statistic.

@@ -1,0 +1,8 @@
+_site/
+_subpath_test/
+__pycache__/
+*.pyc
+.venv/
+# build.py regenerates these from ../data/*.csv on every build
+assets/data/records.json
+assets/data/stats.json

@@ -1,0 +1,52 @@
+---
+title: Browse the Data — The Exhibit Cost Record
+description: Search and filter all 1,478 records — federal contracts, grants, state contracts, UK tenders, and IRS Form 990 disclosures — with a link to the public source for every row.
+url: /browse/
+---
+<div class="breadcrumbs"><a href="/">Home</a> &gt; Browse</div>
+<h1>Browse the data</h1>
+<p class="subtitle">Every row traces to a public source. Filters combine with the search box.</p>
+
+<div class="filters" id="dataFilters">
+  <label>Search
+    <input type="search" data-filter-field="search" data-filter-mode="search" placeholder="Recipient, client, description&hellip;">
+  </label>
+  <label>Source
+    <select data-filter-field="source">
+      <option value="">All sources</option>
+      <option value="federal">Federal contracts</option>
+      <option value="grant">Federal grants</option>
+      <option value="state">State contracts</option>
+      <option value="uk">UK tenders</option>
+      <option value="990">990 disclosures</option>
+    </select>
+  </label>
+  <label>Project class
+    <select data-filter-field="class">
+      <option value="">All classes</option>
+[[CLASS_OPTIONS]]
+    </select>
+  </label>
+  <button type="button" data-filter-reset>Reset</button>
+</div>
+<p class="subtitle" id="dataCount">[[TOTAL]] records</p>
+<p class="note">
+  Click a source link in the last column to verify a row against its public
+  record. Column definitions and classification rules are on the
+  <a href="/methodology/">methodology page</a>. Full dataset (JSON/CSV):
+  <a href="/assets/data/records.json">records.json</a>.
+</p>
+<table class="list" id="dataTable">
+  <thead>
+    <tr><th>Source</th><th>Recipient</th><th>Client / agency</th><th>Year</th><th>Class</th><th>Description</th><th>Amount</th><th>Source</th></tr>
+  </thead>
+  <tbody>
+[[ROWS]]
+  </tbody>
+</table>
+<script src="/assets/js/filter.js" defer></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  initTableFilters({ table: "dataTable", filters: "dataFilters", count: "dataCount", label: "records" });
+});
+</script>
