@@ -478,6 +478,53 @@ museum"/"all exhibits"-scoped language found six rows already present in
   to `building_wide` at **low** confidence, since the title alone doesn't
   explicitly confirm full-facility scope the way the three rows above do.
 
+## Sampling bias and composition effects (read before citing any median)
+
+Three properties of how this dataset was assembled shape its summary
+statistics. None of them is a data error — every row is a real public
+record — but each one limits what the aggregates can honestly claim.
+
+**1. Recipient-driven concentration.** The five most frequent recipients
+(Capitol Exhibit Services ~280 rows, Color-Ad 129, Electrosonic 76,
+Explus 60, Southern Custom Exhibits of Alabama 55) account for roughly
+45% of federal-plus-state rows. This is substantially an artifact of the
+sweep design, not a market-structure finding: the federal sweep included
+a recipient pass over 27 named firms, and the Experiential Design Index
+cross-reference ran further un-keyworded recipient-name searches — so
+firms searched by name have their full award histories captured, while
+firms found only via keywords have partial ones. Row counts must never be
+read as market share. By dollars the picture inverts: those five firms
+hold a low-single-digit share of the dataset's total obligated amount,
+and the most frequent recipient averages about $117,000 per row —
+high-volume small task orders (trade-show support, small repairs) that
+pull class medians downward. This is why the findings page reports
+interquartile ranges alongside medians.
+
+**2. Class composition and the `fabrication_inclusive` flag.** Pooled
+across all classes, fabrication-inclusive rows have a higher median than
+fabrication-excluded rows ($150,000 vs. $98,040). That pooled gap must
+not be cited as a measured "fabrication premium": the two flag groups
+contain different mixes of project classes (fab-inclusive rows are 86%
+`multi_station`; fab-excluded rows are 42% `maintenance` plus small
+design task orders), so the pooled comparison mostly measures class mix.
+Controlled within `multi_station` — the only class with enough rows on
+both sides — the medians are statistically indistinguishable ($165,728
+fab-inclusive, n=412, vs. $160,222 fab-excluded, n=56). The smaller
+classes point in different directions at unusable n (`single_interactive`
+1.52× at n=28/30; `maintenance` inverts at 0.24× because its
+fab-excluded side is dominated by larger AV service contracts). The flag
+exists so readers can compare like with like; this dataset has **not**
+measured what bundling fabrication adds to a project's cost.
+
+**3. Median sensitivity to sweep composition.** Because coverage grows
+opportunistically (keyword passes, recipient passes, cross-references),
+per-class medians move as sources are added: the 2026-07-22 Index
+cross-reference added 144 federal rows (mostly small NPS design-only
+task orders) and shifted the federal `single_interactive` median from
+roughly $68,000 to $45,000. Medians here describe *this record, given
+its sources* — not a stable market price. Interquartile ranges are more
+robust to these shifts and are the preferred citation form.
+
 ## Known gaps
 
 - `total_award_value` is empty for every federal row except the two
