@@ -53,6 +53,13 @@ ROOT = Path(__file__).resolve().parent
 SITE_URL = os.environ.get("SITE_URL", "https://sitara.systems/exhibit-cost-record")
 BASE = urllib.parse.urlsplit(SITE_URL).path.rstrip("/")
 
+# Set NOINDEX=1 for preview deploys not meant to be crawled/cited (e.g. the
+# GitHub Pages preview, which serves at a different URL than the production
+# fold-in under sitara.systems) -- emits a blanket-disallow robots.txt and a
+# noindex meta tag on every page. Same pattern as the Experiential Design
+# Index's build_site.py.
+NOINDEX = os.environ.get("NOINDEX") == "1"
+
 PAGES_DIR = ROOT / "content" / "pages"
 TEMPLATES_DIR = ROOT / "templates"
 ASSETS_DIR = ROOT / "assets"
@@ -133,7 +140,7 @@ def build(out_dir: Path) -> list[dict]:
 
     for page in pages:
         html = base.render(page=page, content=page["content"], site_url=SITE_URL,
-                           stats=stats)
+                           stats=stats, noindex=NOINDEX)
         if BASE:
             html = base_prefix_re.sub(f'\\1="{BASE}/', html)
         dest = out_path(out_dir, page["url"])
@@ -156,6 +163,19 @@ def build(out_dir: Path) -> list[dict]:
     if root_dir.exists():
         for extra in root_dir.glob("*"):
             shutil.copy2(extra, out_dir / extra.name)
+
+    # NOINDEX preview deploys (e.g. GitHub Pages) override the static
+    # production robots.txt above with a blanket disallow, so a URL that
+    # isn't the canonical home for this dataset never gets indexed/cited
+    # in its place. Same pattern as the Experiential Design Index's
+    # build_site.py.
+    if NOINDEX:
+        (out_dir / "robots.txt").write_text(
+            "# robots.txt -- interim preview deploy, not the production site.\n"
+            "# Blanket disallow: this URL is not the canonical home for The\n"
+            "# Exhibit Cost Record and should never be indexed or cited in its\n"
+            "# place.\n\nUser-agent: *\nDisallow: /\n",
+            encoding="utf-8")
 
     return pages
 

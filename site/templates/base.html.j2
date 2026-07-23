@@ -6,6 +6,7 @@
 <title>{{ page.title }}</title>
 <meta name="description" content="{{ page.description }}">
 <link rel="canonical" href="{{ site_url }}{{ page.url }}">
+{% if noindex %}<meta name="robots" content="noindex, nofollow">{% endif %}
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="The Exhibit Cost Record">
 <meta property="og:title" content="{{ page.title }}">

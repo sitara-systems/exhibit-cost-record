@@ -1,4 +1,12 @@
-name: Deploy site to GitHub Pages
+name: Deploy preview to GitHub Pages
+
+# Interim preview deploy only (B2, Live Site Audit 2026-07-22): the
+# production home for this site is sitara.systems/exhibit-cost-record/
+# (folded in by the sitara-website repo's deploy.yml). This workflow
+# publishes the same build to GitHub Pages at a *different* URL for early
+# review, with NOINDEX=1 so the preview never gets indexed/cited in place
+# of the eventual production URL. Same pattern as the Experiential Design
+# Index's pages.yml.
 
 on:
   push:
@@ -28,6 +36,7 @@ jobs:
         working-directory: site
         env:
           SITE_URL: https://sitara-systems.github.io/exhibit-cost-record
+          NOINDEX: "1"
         run: python build.py
       - uses: actions/upload-pages-artifact@v3
         with:
