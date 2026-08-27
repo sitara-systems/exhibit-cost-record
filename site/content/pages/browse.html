@@ -56,5 +56,15 @@ url: /browse/
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   initTableFilters({ table: "dataTable", filters: "dataFilters", count: "dataCount", label: "records" });
+  // Deep-link support for /browse/?q=<text> -- used by /firms/<slug>/ pages
+  // to link back into the full table pre-filtered to that firm's rows.
+  var q = new URLSearchParams(window.location.search).get("q");
+  if (q) {
+    var searchInput = document.querySelector('[data-filter-field="search"]');
+    if (searchInput) {
+      searchInput.value = q;
+      searchInput.dispatchEvent(new Event("input"));
+    }
+  }
 });
 </script>

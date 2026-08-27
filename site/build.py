@@ -39,6 +39,7 @@ from jinja2 import Environment, FileSystemLoader
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "scripts"))
 import export_data  # noqa: E402
+import build_firm_pages  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent
 
@@ -120,6 +121,10 @@ def build(out_dir: Path) -> list[dict]:
     out_dir.mkdir(parents=True)
 
     pages = [parse_page(p) for p in sorted(PAGES_DIR.glob("*.html"))]
+    # /firms/<slug>/ pages, one per recipient, plus a /firms/ index --
+    # see scripts/build_firm_pages.py for the D5 firm-vs-institution
+    # decision this implements.
+    pages += build_firm_pages.build_pages(records)
     for page in pages:
         for marker, value in substitutions.items():
             if marker in page["content"]:
