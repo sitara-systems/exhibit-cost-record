@@ -17,6 +17,18 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Dataset","name":"The Exhibit Cost Record","description":"A public-records dataset of {{ stats.total_records }} museum exhibit, interactive, and audiovisual contract costs, assembled from federal contracts, federal and state grants, state procurement portals, UK public tenders, and IRS Form 990 disclosures.","url":"{{ site_url }}/","license":"https://creativecommons.org/licenses/by/4.0/","isAccessibleForFree":true,"creator":{"@type":"Organization","name":"Sitara Systems","url":"https://sitara.systems/"},"publisher":{"@type":"Organization","name":"Sitara Systems","url":"https://sitara.systems/"},"keywords":["museum exhibits","exhibit costs","interactive media","procurement","IRS Form 990","government contracts"],"distribution":[{"@type":"DataDownload","encodingFormat":"application/json","contentUrl":"{{ site_url }}/assets/data/records.json"},{"@type":"DataDownload","encodingFormat":"application/json","contentUrl":"{{ site_url }}/assets/data/stats.json"}]}
 </script>
+{% if not noindex %}
+<!-- GA4, added 2026-08-27. Single measurement ID (G-YK22BRNLFM) shared
+     across the whole Sitara-family domain (sitara.systems + skies.sitara.systems
+     + the folded-in EDI/ECR subdirectories) -- one property, one funnel. -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YK22BRNLFM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-YK22BRNLFM");
+</script>
+{% endif %}
 </head>
 <body>
 <header class="site">
