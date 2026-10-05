@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ page.title }}</title>
-<meta name="description" content="{{ page.description }}">
+<meta name="description" content="{{ page.description|meta_desc }}">
 <link rel="canonical" href="{{ site_url }}{{ page.url }}">
 {% if noindex %}<meta name="robots" content="noindex, nofollow">{% endif %}
 <meta property="og:type" content="website">
@@ -12,11 +12,18 @@
 <meta property="og:title" content="{{ page.title }}">
 <meta property="og:description" content="{{ page.description }}">
 <meta property="og:url" content="{{ site_url }}{{ page.url }}">
+<meta property="og:image" content="https://sitara.systems/assets/images/brand/sitara-mark.png">
 <meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="/assets/css/site.css">
+{% if page.url == "/" %}
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Dataset","name":"The Exhibit Cost Record","description":"A public-records dataset of {{ stats.total_records }} museum exhibit, interactive, and audiovisual contract costs, assembled from federal contracts, federal and state grants, state procurement portals, UK public tenders, and IRS Form 990 disclosures.","url":"{{ site_url }}/","license":"https://creativecommons.org/licenses/by/4.0/","isAccessibleForFree":true,"creator":{"@type":"Organization","name":"Sitara Systems","url":"https://sitara.systems/"},"publisher":{"@type":"Organization","name":"Sitara Systems","url":"https://sitara.systems/"},"keywords":["museum exhibits","exhibit costs","interactive media","procurement","IRS Form 990","government contracts"],"distribution":[{"@type":"DataDownload","encodingFormat":"application/json","contentUrl":"{{ site_url }}/assets/data/records.json"},{"@type":"DataDownload","encodingFormat":"application/json","contentUrl":"{{ site_url }}/assets/data/stats.json"}]}
+{"@context":"https://schema.org","@type":"Dataset","@id":"{{ site_url }}/#dataset","name":"The Exhibit Cost Record","description":"A public-records dataset of {{ stats.total_records }} museum exhibit, interactive, and audiovisual contract costs, assembled from federal contracts, federal and state grants, state procurement portals, UK public tenders, and IRS Form 990 disclosures.","url":"{{ site_url }}/","license":"https://creativecommons.org/licenses/by/4.0/","isAccessibleForFree":true,"creator":{"@type":"Organization","name":"Sitara Systems","url":"https://sitara.systems/"},"publisher":{"@type":"Organization","name":"Sitara Systems","url":"https://sitara.systems/"},"keywords":["museum exhibits","exhibit costs","interactive media","procurement","IRS Form 990","government contracts"],"distribution":[{"@type":"DataDownload","encodingFormat":"application/json","contentUrl":"{{ site_url }}/assets/data/records.json"},{"@type":"DataDownload","encodingFormat":"application/json","contentUrl":"{{ site_url }}/assets/data/stats.json"}]}
 </script>
+{% else %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","name":{{ page.title|tojson }},"url":"{{ site_url }}{{ page.url }}","isPartOf":{"@type":"Dataset","@id":"{{ site_url }}/#dataset","name":"The Exhibit Cost Record","url":"{{ site_url }}/"}}
+</script>
+{% endif %}
 {% if not noindex %}
 <!-- GA4, added 2026-08-27. Single measurement ID (G-YK22BRNLFM) shared
      across the whole Sitara-family domain (sitara.systems + skies.sitara.systems

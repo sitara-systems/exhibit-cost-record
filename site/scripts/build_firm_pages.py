@@ -88,14 +88,14 @@ def build_pages(records: list[dict]) -> list[dict]:
 
         subtotal_line = f"${round(total_usd):,}" if total_usd else None
 
-        desc_bits = [f"{n} record{'s' if n != 1 else ''}"]
+        desc_bits = [f"{n} public award record{'s' if n != 1 else ''}"]
         if subtotal_line:
-            desc_bits.append(f"{subtotal_line} total across USD-denominated rows")
+            desc_bits.append(f"{subtotal_line} total")
         if year_span:
             desc_bits.append(str(year_span))
         description = html.escape(
-            f"{name} in The Exhibit Cost Record: " + ", ".join(desc_bits) +
-            " -- every figure sourced to its public record."
+            f"{name}: " + ", ".join(desc_bits) +
+            ". Exhibit contract and grant data, each row linked to its public source."
         )[:300]
 
         rows_html = export_data.render_rows(sorted(recs, key=_record_key))

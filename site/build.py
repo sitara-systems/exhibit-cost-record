@@ -27,6 +27,7 @@ Usage: python build.py [--out DIR]
 from __future__ import annotations
 
 import argparse
+import html
 import os
 import re
 import shutil
@@ -90,6 +91,18 @@ def out_path(out_dir: Path, url: str) -> Path:
     return out_dir / url.strip("/") / "index.html"
 
 
+def meta_desc(text: str, limit: int = 158) -> str:
+    """Trim a meta description to a SERP-safe length at a sentence or word
+    boundary. Source copy stays full-length (og:description)."""
+    text = " ".join(html.unescape(str(text)).split())
+    if len(text) > limit:
+        cut = text[:limit]
+        sent = max(cut.rfind(". "), cut.rfind("; "))
+        text = (cut[:sent + 1].rstrip(";") if sent >= 90
+                else cut[:cut.rfind(" ")].rstrip(" ,;:-—") + "…")
+    return html.escape(text)
+
+
 def build(out_dir: Path) -> list[dict]:
     # regenerate the browse dataset from the source CSVs every build so the
     # site never drifts from data/*.csv
@@ -114,6 +127,7 @@ def build(out_dir: Path) -> list[dict]:
 
     env = Environment(loader=FileSystemLoader(TEMPLATES_DIR), autoescape=False,
                       keep_trailing_newline=True)
+    env.filters["meta_desc"] = meta_desc
     base = env.get_template("base.html.j2")
 
     if out_dir.exists():
