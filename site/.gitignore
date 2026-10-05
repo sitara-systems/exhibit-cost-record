@@ -6,3 +6,4 @@ __pycache__/
 # build.py regenerates these from ../data/*.csv on every build
 assets/data/records.json
 assets/data/stats.json
+assets/data/records.csv

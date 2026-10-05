@@ -1,7 +1,7 @@
 # The Exhibit Cost Record
 
 > A public-records dataset of museum exhibit, interactive, and audiovisual
-> contract costs — 1,478 rows assembled entirely from federal contracts,
+> contract costs — [[TOTAL]] rows assembled entirely from federal contracts,
 > federal and state grants, state procurement portals, UK public tenders,
 > and IRS Form 990 nonprofit disclosures. Every row traces to a public
 > source URL. No firm's internal finances appear here.
@@ -14,7 +14,7 @@ data resource under the same domain.
 
 ## Key pages
 
-- [Browse the data](https://sitara.systems/exhibit-cost-record/browse/): search and filter all 1,478 records
+- [Browse the data](https://sitara.systems/exhibit-cost-record/browse/): search and filter all [[TOTAL]] records
 - [Findings](https://sitara.systems/exhibit-cost-record/findings/): what the data indicates about exhibit pricing,
   with figures and caveats
 - [Methodology](https://sitara.systems/exhibit-cost-record/methodology/): sources, classification rules, the
@@ -30,3 +30,13 @@ on any firm's pricing. Figures vary substantially by whether exhibit
 fabrication is bundled into the scope — always check the
 `fabrication_inclusive` flag before comparing two figures. See
 the methodology page before citing any individual row or summary statistic.
+
+## Data and full text
+
+- [records.csv](https://sitara.systems/exhibit-cost-record/assets/data/records.csv): every record, flat CSV
+  (one row per award; same fields as the JSON)
+- [records.json](https://sitara.systems/exhibit-cost-record/assets/data/records.json): every record as JSON
+- [stats.json](https://sitara.systems/exhibit-cost-record/assets/data/stats.json): summary statistics
+- [llms-full.txt](https://sitara.systems/exhibit-cost-record/llms-full.txt): full text of the home, findings,
+  methodology, benchmarks and about pages in one file
+- [Firms](https://sitara.systems/exhibit-cost-record/firms/): every recipient firm, one page each

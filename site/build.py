@@ -27,6 +27,7 @@ Usage: python build.py [--out DIR]
 from __future__ import annotations
 
 import argparse
+import csv
 import html
 import os
 import re
@@ -40,6 +41,7 @@ from jinja2 import Environment, FileSystemLoader
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "scripts"))
 import export_data  # noqa: E402
+from llms_text import html_to_text  # noqa: E402
 import build_firm_pages  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent
@@ -112,6 +114,10 @@ def build(out_dir: Path) -> list[dict]:
     (export_data.OUT_DIR / "records.json").write_text(
         json.dumps(records, separators=(",", ":")), encoding="utf-8")
     stats = export_data.stats(records)
+    with (export_data.OUT_DIR / "records.csv").open("w", newline="", encoding="utf-8") as fh:
+        w = csv.DictWriter(fh, fieldnames=list(dict.fromkeys(k for r in records for k in r)))
+        w.writeheader()
+        w.writerows(records)
     (export_data.OUT_DIR / "stats.json").write_text(
         json.dumps(stats, indent=1), encoding="utf-8")
 
@@ -181,7 +187,21 @@ def build(out_dir: Path) -> list[dict]:
     root_dir = ROOT / "content" / "root"
     if root_dir.exists():
         for extra in root_dir.glob("*"):
-            shutil.copy2(extra, out_dir / extra.name)
+            if extra.name == "llms.txt":
+                (out_dir / extra.name).write_text(
+                    extra.read_text(encoding="utf-8").replace("[[TOTAL]]", f"{len(records):,}"),
+                    encoding="utf-8")
+            else:
+                shutil.copy2(extra, out_dir / extra.name)
+
+    # llms-full.txt: the main text of the narrative pages in one fetchable
+    # file (firm pages are data views; they are covered by the data files)
+    parts = [(out_dir / "llms.txt").read_text(encoding="utf-8").strip()]
+    for p in pages:
+        if p["url"] in ("/", "/findings/", "/methodology/", "/benchmarks/", "/about/"):
+            body = html_to_text((out_path(out_dir, p["url"])).read_text(encoding="utf-8"))
+            parts.append(f"\n\n---\n\n# {p['title']}\nURL: {SITE_URL}{p['url']}\n\n{body}")
+    (out_dir / "llms-full.txt").write_text("".join(parts) + "\n", encoding="utf-8")
 
     # NOINDEX preview deploys (e.g. GitHub Pages) override the static
     # production robots.txt above with a blanket disallow, so a URL that
